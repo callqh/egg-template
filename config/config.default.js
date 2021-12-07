@@ -15,7 +15,7 @@ module.exports = appInfo => {
   config.middleware = [];
 
   config.jwt = {
-    secret: '123456',
+    secret: 'terminus_fe_1638845188542',
   };
 
   // 安全配置 （https://eggjs.org/zh-cn/core/security.html）
@@ -35,6 +35,8 @@ module.exports = appInfo => {
     password: 'wofule',
     database: 'database_development',
   };
+  // 错误处理
+  config.onerror = {};
   return {
     ...config,
   };

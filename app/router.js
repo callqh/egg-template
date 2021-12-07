@@ -11,4 +11,8 @@ module.exports = app => {
   router.post('/user/login', controller.user.login);
   router.post('/user/crate', controller.user.create);
   router.post('/user/logout', app.jwt, controller.user.logout);
+
+  // data
+  router.resources('data', '/data', controller.data);
+  router.resources('menu', '/menu', controller.menu);
 };

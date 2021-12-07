@@ -3,18 +3,20 @@
 const BaseController = require('./BaseController');
 
 class UserController extends BaseController {
-  // 登录
+  /**
+   * 登录
+   */
   async login() {
     try {
       const { ctx, app } = this;
       const { username, password } = ctx.request.body;
       if (!username || !password) {
-        return this.fail(403, '用户名或者密码为空');
+        return this.fail(500, '用户名或者密码为空');
       }
       // 查找数据库中是否有该用户
       const user = await this.getUser(username);
       if (!user) {
-        return this.fail(403, '用户不存在');
+        return this.fail(500, '用户不存在');
       }
       // 检查密码是否正确
       const checkPassword = this.ctx.helper.compare(password, user.password);
@@ -26,7 +28,7 @@ class UserController extends BaseController {
             username,
           },
           app.config.jwt.secret,
-          { expiresIn: '24h' }
+          { expiresIn: '10000ms' }
         );
         this.success({ id: user.id, username: user.username, token });
       } else {
@@ -36,7 +38,9 @@ class UserController extends BaseController {
       this.fail(err);
     }
   }
-  // 注册
+  /**
+   * 注册
+   */
   async create() {
     const ctx = this.ctx;
     const { password, username } = ctx.request.body;
@@ -46,7 +50,7 @@ class UserController extends BaseController {
     }
     const hasUser = await this.getUser(username);
     if (hasUser) {
-      this.fail(403, '当前用户已经存在');
+      this.fail(500, '当前用户已经存在');
       return;
     }
     try {
@@ -66,9 +70,9 @@ class UserController extends BaseController {
       this.fail(500, err);
     }
   }
-  // 注销
+  // TODO 注销
   async logout() {
-    const { ctx } = this;
+    // const { ctx } = this;
 
     this.success({});
   }
