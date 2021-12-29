@@ -10,8 +10,8 @@ module.exports = app => {
   const jwt = app.middleware.jwt(app.config.jwt);
 
   router.get('/', controller.home.index);
-  router.post('/user/login', controller.user.login);
-  router.post('/user/create', controller.user.create);
-  router.get('/user/logout', jwt, controller.user.logout);
-  router.resources('menu', '/menu', jwt, controller.menu);
+  router.post('/api/user/login', controller.user.login);
+  router.post('/api/user/create', controller.user.create);
+  router.get('/api/user/logout', jwt, controller.user.logout);
+  router.resources('menu', '/api/menu', jwt, controller.menu);
 };
