@@ -1,6 +1,9 @@
 {
   "extends": "eslint-config-egg",
   "rules": {
-    "jsdoc/check-tag-names": 0
+    "jsdoc/check-tag-names": 0,
+    "comma-dangle": 0,
+    "eol-last": 0,
+    "array-bracket-spacing": 0
   }
 }

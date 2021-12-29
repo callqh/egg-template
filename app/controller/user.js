@@ -27,10 +27,19 @@ class UserController extends BaseController {
           {
             username,
           },
-          app.config.jwt.secret,
-          { expiresIn: '10000ms' }
+          app.config.jwt.secret
         );
-        this.success({ id: user.id, username: user.username, token });
+        // 将token放入session
+        ctx.session.jwt_token = {
+          [username]: token,
+        };
+        this.success({
+          id: user.id,
+          username: user.username,
+          avatar: user.avatar,
+          realName: user.username,
+          token,
+        });
       } else {
         this.fail(500, '密码错误');
       }
@@ -70,11 +79,15 @@ class UserController extends BaseController {
       this.fail(500, err);
     }
   }
-  // TODO 注销
+  // 注销
   async logout() {
-    // const { ctx } = this;
-
-    this.success({});
+    const { ctx } = this;
+    try {
+      delete ctx.session.jwt_token[ctx.username];
+      this.success({ msg: '注销成功' });
+    } catch (err) {
+      this.fail(500, err);
+    }
   }
 
   // 查询用户是否存在

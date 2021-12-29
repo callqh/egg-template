@@ -1,18 +1,17 @@
 'use strict';
-
 /**
  * @param {Egg.Application} app - egg application
  */
+
 module.exports = app => {
   const { router, controller } = app;
+
+  // jwt验证
+  const jwt = app.middleware.jwt(app.config.jwt);
+
   router.get('/', controller.home.index);
-
-  // 用户登录、注册相关
   router.post('/user/login', controller.user.login);
-  router.post('/user/crate', controller.user.create);
-  router.post('/user/logout', app.jwt, controller.user.logout);
-
-  // data
-  router.resources('data', '/data', controller.data);
-  router.resources('menu', '/menu', controller.menu);
+  router.post('/user/create', controller.user.create);
+  router.get('/user/logout', jwt, controller.user.logout);
+  router.resources('menu', '/menu', jwt, controller.menu);
 };

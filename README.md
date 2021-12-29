@@ -11,6 +11,12 @@
 
 通过`model`初始化出来的接口，遵循`RESTful API`风格
 
+执行命令快速生成 `Model` 和 `CRUD` 的接口：
+
+```bash
+npx gcrud create <filename>
+```
+
 ## TODO
 
 - [ ] jwt 鉴权存在问题，token 过期仍然可以登录

@@ -1,9 +1,8 @@
-
 'use strict';
 
 const BaseController = require('./BaseController');
 
-class menuController extends BaseController {
+class MenuController extends BaseController {
   /**
    * 查询数据
    * @接口格式 /menu
@@ -21,7 +20,20 @@ class menuController extends BaseController {
         offset: ctx.helper.toInt(body.offset),
       };
       const data = await ctx.model.Menu.findAll(query);
-      this.success({ list: data });
+      const result = [];
+      const m = new Map();
+      data.forEach(item => {
+        const obj = { ...item.dataValues };
+        obj.children = [];
+        m.set(item.id, obj);
+        if (item.p_id === 0) {
+          result.push(obj);
+        }
+        if (m.has(item.p_id)) {
+          m.get(item.p_id).children.push(item);
+        }
+      });
+      this.success(result);
     } catch (err) {
       this.fail(500, err);
     }
@@ -36,7 +48,7 @@ class menuController extends BaseController {
     const id = ctx.helper.toInt(ctx.params.id);
     try {
       const list = await ctx.model.Menu.findByPk(id);
-      this.success({ list });
+      this.success(list);
     } catch (err) {
       this.fail(500, err);
     }
@@ -100,4 +112,4 @@ class menuController extends BaseController {
     }
   }
 }
-module.exports = menuController;
+module.exports = MenuController;

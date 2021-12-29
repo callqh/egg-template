@@ -18,6 +18,21 @@ module.exports = appInfo => {
     secret: 'terminus_fe_1638845188542',
   };
 
+  // 配置接口请求间隔
+  config.limit = {
+    interval: 1000,
+  };
+
+  config.session = {
+    key: 'TRANTOR_EGG',
+    maxAge: 24 * 3600 * 1000, // 1 天
+    httpOnly: true,
+    encrypt: true,
+  };
+
+  // 开启中间件
+  config.middleware = ['limit'];
+
   // 安全配置 （https://eggjs.org/zh-cn/core/security.html）
   config.security = {
     csrf: {
